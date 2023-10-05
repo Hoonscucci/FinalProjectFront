@@ -1,0 +1,41 @@
+.container {
+    position: absolute;
+
+}
+
+.image-container {
+   position: absolute;
+   width: 113%;
+   height: auto;
+}
+
+.widget-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+
+.widgetOne {
+    width: 40%;
+    height: auto;
+    float: left;
+}
+
+.widgetTwo {
+    width: 40%;
+    height: auto;
+    float: left;
+}
+
+
