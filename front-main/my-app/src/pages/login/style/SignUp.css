@@ -1,0 +1,8 @@
+.gdgd {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 위로 정렬 */
+    align-items: center;
+    height: 100vh; /* 높이를 화면 높이의 100%로 설정합니다. */
+}
+  
