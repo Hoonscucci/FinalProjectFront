@@ -1,9 +1,21 @@
 import React, { useState } from "react";
 import "./Nav.css";
+import { useNavigate } from "react-router-dom";
+
 
 const Nav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isChampionDropdownOpen, setIsChampionDropdownOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+
+  const logOutHandler = () => {
+    
+    sessionStorage.clear();
+    navigate(0);
+    navigate(`/`);
+  }
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -84,11 +96,15 @@ const Nav = () => {
             </li>
           </ul>
         </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/login/login">
-            로그인
-          </a>
-        </li>
+        {sessionStorage.getItem("token") ?(<li className="nav-item">
+            <button className="nav-link" onClick={()=> logOutHandler()}>
+              로그아웃
+            </button>
+          </li>):(<li className="nav-item">
+            <a className="nav-link" href="/login/Login">
+              로그인
+            </a>
+          </li>)}
       </nav>
     </div>
   );

@@ -1,11 +1,21 @@
 .css-gtm9xc {
     box-sizing: border-box;
-    width: 1000px;
-    
+    width: auto;
     border-radius: 4px;
     display: flex;
     -webkit-box-pack: justify;
-    justify-content: space-between;
+    justify-content: start;
+    background: var(--gray0);
+    flex: 1; /* 각 버튼을 균등한 너비로 설정합니다. */
+  
+}
+.css-gtm9xc2 {
+    box-sizing: border-box;
+    width: auto;
+    
+    border-radius: 4px;
+    display: flex;
+    justify-content: start;
     background: var(--gray0);
     flex: 1; /* 각 버튼을 균등한 너비로 설정합니다. */
   
@@ -87,8 +97,8 @@ select {
 option {
     font-weight: normal;
     display: block;
-    white-space-collapse: collapse;
-    text-wrap: nowrap;
+    /* white-space-collapse: collapse;
+    text-wrap: nowrap; */
     min-height: 1.2em;
     padding: 0px 2px 1px;
 }
@@ -206,24 +216,24 @@ button {
 .nav-container {
     display: flex;
     background-color: #fff; /* 배경색 지정 */
-    padding: 10px; /* 패딩 추가 */
-    margin-left: 290px;
-    font-size: 15px;
+    padding: 5px; /* 패딩 추가 */
+    position:  relative;
   }
   
   /* 버튼 스타일 */
   .nav-button {
     border:none;
-    text-align: center; /* 텍스트를 가운데 정렬합니다. */
+    /* text-align: center; 텍스트를 가운데 정렬합니다. */
     background-color: #fff; /* 버튼 배경색 지정 */
     color: #000000; /* 텍스트 색상 지정 */
-    padding: 10px 20px; /* 패딩 추가 */
+    padding: 10px 15px;
     border: 1px solid #b2adad;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease; /* 호버 효과 설정 */
-    width: 120px; /* 너비 설정 */
-    height: 40px; /* 높이 설정 */
+    width: auto;  
+    height: auto;
+    font-size: 10px;
   }
   
   .nav-button.active {
@@ -272,6 +282,7 @@ button {
     margin-left: 15px;
     font-size: 20px;
     color: #000000;
+    display: flex;
   }
 
   /* Classic.css or Classic2.css or a new CSS file for background styles */

@@ -1,27 +1,34 @@
+
 import React, { useState } from "react";
 import "./style/Classic.css";
 import "./style/Classic2.css";
+import { ClassicTier } from "../../api";
 
 const Classic = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedTier, setSelectedTier] = useState("Emerald");
-  const [selectedRole, setSelectedRole] = useState("탑"); // 기본값은 "탑"으로 설정
+  const [selectedTier, setSelectedTier] = useState("");
+  const [selectedRole, setSelectedRole] = useState(""); // 기본값은 "탑"으로 설정
+  const [sortBy, setSortBy] = useState("win_rate"); // 초기 정렬 승률 높은순
+  const [sortDirection, setSortDirection] = useState("descending");
+
+
+
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   const tierList = [
-    "Challenger",
-    "Grandmaster",
-    "Master",
-    "Diamond",
-    "Emerald",
-    "Platinum",
-    "Gold",
-    "Silver",
-    "Bronze",
-    "Iron"
+    "챌린저",
+    "그랜드마스터",
+    "마스터",
+    "다이아",
+    "에메랄드",
+    "플레티넘",
+    "골드",
+    "실버",
+    "브론즈",
+    "아이언"
   ];
 
   const changeButtonText = (newText) => {
@@ -29,13 +36,27 @@ const Classic = () => {
     setIsDropdownOpen(false);
   };
 
-  const handleRoleClick = (role) => {
+  const handleRoleClick = async (role) => {
     setSelectedRole(role); // 클릭한 역할을 선택된 역할로 설정
+
+    const tier = selectedTier;
+    const team_position = role;
+
+    const data = {
+      tier,
+      team_position
+    };
+
+    const TierData = await ClassicTier(data);
+    console.log(TierData);
+  
   };
+
 
   return (
       <div>
         <div className="css-123">협곡 티어 정보</div>
+        <div>
         <div className="css-gtm9xc">
           <nav>
             <div className="css-g46fbk">
@@ -55,14 +76,14 @@ const Classic = () => {
                       isDropdownOpen ? "show dropdown-menu-up" : ""
                     }`}
                   >
-                    {tierList.map((tier) => (
-                      <li key={tier}>
+                    {tierList.map((tier2) => (
+                      <li key={tier2}>
                         <a
                           class="dropdown-item"
                           href="#"
-                          onClick={() => changeButtonText(tier)}
+                          onClick={() => changeButtonText(tier2)}
                         >
-                          {tier}
+                          {tier2}
                         </a>
                       </li>
                     ))}
@@ -71,17 +92,17 @@ const Classic = () => {
               </div>
             </div>
           </nav>
-          <div class="input-table">
-            
+          </div>
+          <div className="css-gtm9xc2">
             <nav class="nav-container">
               <button
                 type="button"
-                class={`nav-button ${selectedRole === "탑" ? "active" : ""}`}
-                onClick={() => handleRoleClick("탑")}
+                class={`nav-button ${selectedRole === "TOP" ? "active" : ""}`}
+                onClick={() => handleRoleClick("TOP")}
               >
-                탑
+                TOP
               </button>
-              {["정글", "미드", "바텀", "서폿"].map((role) => (
+              {["JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"].map((role) => (
                 <button
                   key={role}
                   type="button"
@@ -92,9 +113,8 @@ const Classic = () => {
                 </button>
               ))}
             </nav>
-          </div>
         </div>
-
+        </div>
         <div>
           <div class="table-container1">
             <div class="table-header">챔피언</div>
@@ -107,6 +127,7 @@ const Classic = () => {
                 {cell}
               </div>
             ))}
+            
           </div>
         </div>
       </div>
@@ -114,3 +135,4 @@ const Classic = () => {
   };
 
   export default Classic;
+
