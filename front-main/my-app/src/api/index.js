@@ -10,7 +10,7 @@ export async function signUpApi(data) {
 
 export const signInApi = async (data) => {
 
-    const response = await axios.post("http://3.34.4.84:8080/api/auth/signIn", data).catch((error) => console.log(error))
+    const response = await axios.post("http://3.36.123.174:8080/api/auth/signIn", data).catch((error) => console.log(error))
     console.log(response)
     if (!response) return null;
 
@@ -19,7 +19,7 @@ export const signInApi = async (data) => {
 }
 
 export const widgetOneApi = async (data) => {
-    const response = await axios.put("http://3.34.4.84:8080/api/widget/one", data).catch((error) => console.log(error))
+    const response = await axios.put("http://3.36.123.1748080/api/widget/one", data).catch((error) => console.log(error))
     if (!response)  return null;
 
     const result = response.data;
@@ -28,7 +28,7 @@ export const widgetOneApi = async (data) => {
 }
 
 export const widgetTwoApi = async (data) => {
-    const response = await axios.put("http://3.34.4.84:8080/api/widget/two", data).catch((error) => console.log(error))
+    const response = await axios.put("http:/3.36.123.174:8080/api/widget/two", data).catch((error) => console.log(error))
     if (!response)  return null;
 
     const result = response.data;
@@ -37,7 +37,7 @@ export const widgetTwoApi = async (data) => {
 }
 
 export const ClassicTier = async (data) => {
-    const response = await axios.post("http://3.34.4.84:8080/api/classic/tier", data).catch((error) => console.log(error))
+    const response = await axios.post("http://3.36.123.1748080/api/classic/tier", data).catch((error) => console.log(error))
     if (!response) return null;
 
     const result = response.data.list;
@@ -45,7 +45,7 @@ export const ClassicTier = async (data) => {
 }
 
 export const ClassicAnalysis = async (data) => {
-    const response = await axios.post("http://3.34.4.84:8080/api/classic/anal", data).catch((error) => console.log(error))
+    const response = await axios.post("http://3.36.123.1748080/api/classic/anal", data).catch((error) => console.log(error))
     if (!response) return null;
 
     const result = response.data;
@@ -53,7 +53,7 @@ export const ClassicAnalysis = async (data) => {
 }
 
 export const AramTier = async() => {
-    const response = await axios.post("http://3.34.4.84:8080/api/aram/tier").catch((error) => console.log(error))
+    const response = await axios.post("http://3.36.123.1748080/api/aram/tier").catch((error) => console.log(error))
     if (!response) return null;
 
     const result = response.data;
@@ -61,7 +61,7 @@ export const AramTier = async() => {
 }
 
 export const AramAnalysis = async(data) => {
-    const response = await axios.post("http://3.34.4.84:8080/api/aram/anal", data).catch((error) => console.log(error))
+    const response = await axios.post("http://3.36.123.1748080/api/aram/anal", data).catch((error) => console.log(error))
     if (!response) return null;
 
     const result = response.data;
