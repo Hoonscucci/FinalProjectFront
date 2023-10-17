@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export async function signUpApi(data) {
-    const response = await axios.post("http://3.34.4.84:8080/api/auth/signUp", data).catch((error) => null)
+    const response = await axios.post("http://3.36.123.174:8080/api/auth/signUp", data).catch((error) => null)
     if (!response) return null;
 
     const result = response.data;
@@ -19,7 +19,7 @@ export const signInApi = async (data) => {
 }
 
 export const widgetOneApi = async (data) => {
-    const response = await axios.put("http://3.36.123.1748080/api/widget/one", data).catch((error) => console.log(error))
+    const response = await axios.put("http://3.36.123.174:8080/api/widget/one", data).catch((error) => console.log(error))
     if (!response)  return null;
 
     const result = response.data;
@@ -28,7 +28,7 @@ export const widgetOneApi = async (data) => {
 }
 
 export const widgetTwoApi = async (data) => {
-    const response = await axios.put("http:/3.36.123.174:8080/api/widget/two", data).catch((error) => console.log(error))
+    const response = await axios.put("http://3.36.123.174:8080/api/widget/two", data).catch((error) => console.log(error))
     if (!response)  return null;
 
     const result = response.data;
