@@ -1,80 +1,71 @@
-import React, { useState } from "react";
-import Classic_An from "./anal/Classic";
-import Classic_Ti from './tier/Classic';
-import "./Home.css"
-// import { useCookies } from "universal-cookie";
-import Aram_An from "./anal/Aram";
-import Aram_Ti from "./tier/Aram";
+import React from "react";
+import ClassicBuild from "./anal/ClassicBuild";
+import Classic from "./tier/Classic";
+import "./Home.css";
+import AramBuild from "./anal/AramBuild";
+import Aram from "./tier/Aram";
 import WidgetOneButton from "./widget/One";
 import WidgetTwoButton from "./widget/Two";
 
-
 const Home = () => {
-  // const [cookies, setCookies] = useCookies();
   const widgetOneComponentName = sessionStorage.getItem("widgetOneTrue");
   const widgetTwoComponentName = sessionStorage.getItem("widgetTwoTrue");
-  const token = sessionStorage.getItem("token")
+  const token = sessionStorage.getItem("token");
 
   const componentMap = {
-    Classic_An: <Classic_An />,
-    Classic_Ti: <Classic_Ti />,
-    Aram_An: <Aram_An />,
-    Aram_Ti: <Aram_Ti />,
+    Classic_An: <ClassicBuild />,
+    Classic_Ti: <Classic />,
+    Aram_An: <AramBuild />,
+    Aram_Ti: <Aram />,
   };
 
-  const widgetNameMap = {
-    Classic_An: "협곡 분석",
-    Classic_Ti: "협곡 티어",
-    Aram_An: "칼바람 분석",
-    Aram_Ti: "칼바람 티어",
-  }
-
-  const widgetOneComponent = componentMap[widgetOneComponentName]
-  const widgetTwoComponent = componentMap[widgetTwoComponentName]
-
+  const widgetOneComponent = componentMap[widgetOneComponentName];
+  const widgetTwoComponent = componentMap[widgetTwoComponentName];
 
   return (
     <div className="container">
       <div className="image-container">
         <img
-          src="https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blte18c746f460ab0f7/647fd84007768f6edc948595/TFT_SET923_COMMS_GameplayOverview_ArticleBanner_1920x1080_v001_ALyu.jpg"
+          src="https://event.leagueoflegends.co.kr/beemo-Teemo/img/beemo-wp.jpg"
           alt=""
+          style={{ width: "100%" }} // 원하는 너비로 설정하세요
         />
-     
-          <div className="widget-container">
-            { widgetOneComponent ? 
-            (<div className="widgetOne">
-              <WidgetOneButton/>
+
+        <div className="widget-container">
+          {widgetOneComponent ? (
+            <div className="widgetOne">
+              <WidgetOneButton />
               {widgetOneComponent}
-            </div>) 
-
-            : (token ? 
-            (<div className="widgetNotLogin1">
+            </div>
+          ) : token ? (
+            <div className="widgetNotLogin1">
               눌러주세요
-            <WidgetOneButton/>
-            </div>)
-            :(<div className="widgetNotLogin1">
-              로그인시 이용 가능한 페이지입니다.
-              </div>))}
-            
+              <WidgetOneButton />
+            </div>
+          ) : (
+            <div className="widgetNotLogin1">
+              <div className="widgetNotLogin3">로그인시 이용 가능한 페이지입니다.</div>
+            </div>
+          )}
 
-            {widgetTwoComponent ? 
-            (<div className="widgetTwo">
-              <WidgetTwoButton/>
-              {widgetTwoComponent }
-            </div>) 
-            : (token ? 
-            (<div className="widgetNotLogin2">
+          {widgetTwoComponent ? (
+            <div className="widgetTwo">
+              <WidgetTwoButton />
+              {widgetTwoComponent}
+            </div>
+          ) : token ? (
+            <div className="widgetNotLogin2">
               눌러주세요
-              <WidgetTwoButton/>
-              </div>)
-              :(<div className="widgetNotLogin2">
-                로그인시 이용 가능한 페이지입니다.
-                </div>))}
-          
-          </div>
+              <WidgetTwoButton />
+            </div>
+          ) : (
+            <div className="widgetNotLogin2">
+              <div className="widgetNotLogin3">로그인시 이용 가능한 페이지입니다.</div>
+            </div>
+          )}
         </div>
       </div>
+    </div>
   );
 };
 

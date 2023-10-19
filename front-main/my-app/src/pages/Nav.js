@@ -2,20 +2,15 @@ import React, { useState } from "react";
 import "./Nav.css";
 import { useNavigate } from "react-router-dom";
 
-
 const Nav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isChampionDropdownOpen, setIsChampionDropdownOpen] = useState(false);
-
   const navigate = useNavigate();
-
-
   const logOutHandler = () => {
-    
     sessionStorage.clear();
     navigate(0);
     navigate(`/`);
-  }
+  };
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -45,7 +40,11 @@ const Nav = () => {
           onMouseEnter={toggleDropdown}
           onMouseLeave={closeDropdowns}
         >
-          <a className="nav-link dropdown-toggle" href="/anal/Classic" role="button">
+          <a
+            className="nav-link dropdown-toggle"
+            href="/classicsearch"
+            role="button"
+          >
             챔피언 분석
           </a>
           <ul
@@ -54,12 +53,12 @@ const Nav = () => {
             style={{ backgroundColor: "#380101", color: "white" }}
           >
             <li>
-              <a className="dropdown-item" href="/anal/Classic">
+              <a className="dropdown-item" href="/classicsearch">
                 협곡 분석
               </a>
             </li>
             <li>
-              <a className="dropdown-item" href="/anal/Aram">
+              <a className="dropdown-item" href="/aramsearch">
                 칼바람 분석
               </a>
             </li>
@@ -96,15 +95,19 @@ const Nav = () => {
             </li>
           </ul>
         </li>
-        {sessionStorage.getItem("token") ?(<li className="nav-item">
-            <button className="nav-link" onClick={()=> logOutHandler()}>
+        {sessionStorage.getItem("token") ? (
+          <li className="nav-item">
+            <button className="nav-link" onClick={() => logOutHandler()}>
               로그아웃
             </button>
-          </li>):(<li className="nav-item">
+          </li>
+        ) : (
+          <li className="nav-item">
             <a className="nav-link" href="/login/Login">
-              로그인
+              로그인 / 회원가입
             </a>
-          </li>)}
+          </li>
+        )}
       </nav>
     </div>
   );

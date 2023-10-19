@@ -1,120 +1,141 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style/Classic.css";
 import "./style/Classic2.css";
 import { AramTier } from "../../api";
 
 const Aram = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedTier, setSelectedTier] = useState("Emerald");
-  const [selectedRole, setSelectedRole] = useState("탑"); // 기본값은 "탑"으로 설정
+  const [topPositionData, setTopPositionData] = useState([]);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  useEffect(() => {
+    AramTier()
+      .then((result) => {
+        if (result) {
+          console.log("받아온 Tier 데이터:", { result });
+          const initialData = [...result.list].sort((a, b) => b.pick_cnt - a.pick_cnt);
+          setTopPositionData(initialData);
+        } else {
+          console.log("Tier 데이터를 받아올 수 없음.");
+        }
+      })
+      .catch((error) => {
+        console.error("오류 발생:", error);
+      });
 
-  const tierList = [
-    "Challenger",
-    "Grandmaster",
-    "Master",
-    "Diamond",
-    "Emerald",
-    "Platinum",
-    "Gold",
-    "Silver",
-    "Bronze",
-    "Iron"
-  ];
+    // 표본이 높은 순으로 정렬해서 초기 데이터 설정
+    // const initialData = [...topPositionData].sort((a, b) => b.pick_cnt - a.pick_cnt);
+    // setTopPositionData(initialData);
+  }, []);
 
-  const changeButtonText = (newText) => {
-    setSelectedTier(newText);
-    setIsDropdownOpen(false);
-  };
+  const [sortBy, setSortBy] = useState("pick_cnt"); // 초기 정렬 기준
+  const [sortDirection, setSortDirection] = useState("descending"); // 초기 정렬 방향
 
-  const handleRoleClick = async (role) => {
-    setSelectedRole(role); // 클릭한 역할을 선택된 역할로 설정
-    const data = await AramTier();
-    console.log(data)
+  // 데이터를 주어진 key로 정렬하는 함수
+  const sortByKey = (key) => {
+    const sortedData = [...topPositionData].sort((a, b) => {
+      if (sortDirection === "ascending") {
+        return a[key] - b[key];
+      } else {
+        return b[key] - a[key];
+      }
+    });
+    setTopPositionData(sortedData);
+    setSortBy(key);
+    // 정렬 방향을 토글 (ascending <-> descending)
+    setSortDirection(
+      sortDirection === "ascending" ? "descending" : "ascending"
+    );
   };
 
   return (
-      <div>
-        <div className="css-123">칼바람 티어 정보</div>
-        <div>
-        <div className="css-gtm9xc">
-          <nav>
-            <div className="css-g46fbk">
-              <div>
-                <div class="dropdown">
-                  <button
-                    class="btn custom-button dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    onClick={toggleDropdown}
-                  >
-                    {selectedTier}
-                  </button>
-                  <ul
-                    class={`dropdown-menu text-center ${
-                      isDropdownOpen ? "show dropdown-menu-up" : ""
-                    }`}
-                  >
-                    {tierList.map((tier) => (
-                      <li key={tier}>
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          onClick={() => changeButtonText(tier)}
-                        >
-                          {tier}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </nav>
-          </div>
-          <div className="css-gtm9xc2">
-            <nav class="nav-container">
-              <button
-                type="button"
-                class={`nav-button ${selectedRole === "탑" ? "active" : ""}`}
-                onClick={() => handleRoleClick("탑")}
-              >
-                탑
-              </button>
-              {["정글", "미드", "바텀", "서폿"].map((role) => (
-                <button
-                  key={role}
-                  type="button"
-                  class={`nav-button ${selectedRole === role ? "active" : ""}`}
-                  onClick={() => handleRoleClick(role)}
-                >
-                  {role}
-                </button>
-              ))}
-            </nav>
-        </div>
-        </div>
-        <div>
-          <div class="table-container1">
-            <div class="table-header">챔피언</div>
-            <div class="table-header">티어</div>
-            <div class="table-header">승률</div>
-            <div class="table-header">픽률</div>
-            <div class="table-header">밴율</div>
-            {[1, 2, 3, 4, 5].map((cell) => (
-              <div key={cell} class="table-cell">
-                {cell}
-              </div>
-            ))}
-            
-          </div>
-        </div>
+    <div>
+      <div className="css-123">칼바람 티어 정보</div>
+      <br></br>
+      <br></br>
+      <div className="css-gtm9xc">
+        <div className="input-table"></div>
       </div>
-    );
-  };
+
+      <div>
+        <div className="table-container2">
+          <div className="table-header">챔피언</div>
+          <div className="table-header">
+            K/D/A
+            <button onClick={() => sortByKey("av_kda")}>
+              {sortBy === "av_kda"
+                ? sortDirection === "ascending"
+                  ? "▲"
+                  : "▼"
+                : "▲"}
+            </button>
+          </div>
+          <div className="table-header">
+            승률
+            <button onClick={() => sortByKey("win_rate")}>
+              {sortBy === "win_rate"
+                ? sortDirection === "ascending"
+                  ? "▲"
+                  : "▼"
+                : "▲"}
+            </button>
+          </div>
+          <div className="table-header">
+            픽률
+            <button onClick={() => sortByKey("pick_rate")}>
+              {sortBy === "pick_rate"
+                ? sortDirection === "ascending"
+                  ? "▲"
+                  : "▼"
+                : "▲"}
+            </button>
+          </div>
+          <div className="table-header">
+            표본
+            <button onClick={() => sortByKey("pick_cnt")}>
+              {sortBy === "pick_cnt"
+                ? sortDirection === "ascending"
+                  ? "▲"
+                  : "▼"
+                : "▲"}
+            </button>
+          </div>
+        </div>
+        {topPositionData.map((champion) => (
+          <div key={champion.champion_name} className="table-row2">
+            <div className="table-data">{champion.champion_name}</div>
+            <div
+              className="table-data"
+              style={{
+                color:
+                  champion.av_kda >= 4
+                    ? "#E84057"
+                    : champion.av_kda >= 3
+                    ? "#0093FF"
+                    : champion.av_kda >= 2
+                    ? "#00BBA3"
+                    : champion.av_kda < 2
+                    ? "#9AA4AF"
+                    : "inherit",
+              }}
+            >
+              {champion.av_kda}
+            </div>
+            <div
+              className="table-data"
+              style={{
+                color: champion.win_rate >= 0.6 ? "#E84057" : "inherit",
+              }}
+            >
+              {(champion.win_rate * 100).toFixed(2)}%
+            </div>
+            <div className="table-data">
+              {(champion.pick_rate * 100).toFixed(2)}%
+            </div>
+            <div className="table-data">{champion.pick_cnt}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default Aram;

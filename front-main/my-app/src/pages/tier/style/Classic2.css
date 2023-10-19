@@ -1,21 +1,17 @@
+@font-face {
+  font-family: 'omyu_pretty';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .css-gtm9xc {
     box-sizing: border-box;
-    width: auto;
+    width: 100px;
     border-radius: 4px;
     display: flex;
     -webkit-box-pack: justify;
-    justify-content: start;
-    background: var(--gray0);
-    flex: 1; /* 각 버튼을 균등한 너비로 설정합니다. */
-  
-}
-.css-gtm9xc2 {
-    box-sizing: border-box;
-    width: auto;
-    
-    border-radius: 4px;
-    display: flex;
-    justify-content: start;
+    justify-content: space-between;
     background: var(--gray0);
     flex: 1; /* 각 버튼을 균등한 너비로 설정합니다. */
   
@@ -97,8 +93,8 @@ select {
 option {
     font-weight: normal;
     display: block;
-    /* white-space-collapse: collapse;
-    text-wrap: nowrap; */
+    white-space-collapse: collapse;
+    text-wrap: nowrap;
     min-height: 1.2em;
     padding: 0px 2px 1px;
 }
@@ -145,20 +141,36 @@ option {
     white-space: nowrap;
 }
 
-button {
-    border: 0px;
-    padding: 0px;
-    background: transparent;
-    cursor: pointer;
-}
+/* CSS 파일에 아래 스타일을 추가합니다. */
+/* 버튼 스타일을 수정하여 border를 제거합니다. */
 
-button {
-    margin: 0px;
-    padding: 0px;
-    border: 0px;
-    cursor: pointer;
+/* 기본 버튼 스타일 */
+.table-header button {
     background: none;
-}
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    text-decoration: none; /* 선택 시 텍스트 밑줄 제거 */
+  }
+  
+  /* 선택된 열의 버튼 스타일 */
+  .table-header button.selected {
+    color: blue; /* 선택된 열은 파란색으로 표시됩니다. */
+  }
+  
+  /* 오름차순 및 내림차순 아이콘 스타일 */
+  .table-header button.asc::after {
+    content: "▲";
+    margin-left: 4px;
+  }
+  
+  .table-header button.desc::after {
+    content: "▼";
+    margin-left: 4px;
+  }
+  
 
 .css-60l9xa {
     display: flex;
@@ -216,24 +228,26 @@ button {
 .nav-container {
     display: flex;
     background-color: #fff; /* 배경색 지정 */
-    padding: 5px; /* 패딩 추가 */
-    position:  relative;
+    padding: 12px; /* 패딩 추가 */
+    font-size: 16px;
+    font-family: 'omyu_pretty', sans-serif;
+    text-align: center !important; 
+    
   }
   
   /* 버튼 스타일 */
   .nav-button {
     border:none;
-    /* text-align: center; 텍스트를 가운데 정렬합니다. */
+    text-align: center; /* 텍스트를 가운데 정렬합니다. */
     background-color: #fff; /* 버튼 배경색 지정 */
     color: #000000; /* 텍스트 색상 지정 */
-    padding: 10px 15px;
+    padding: 10px 20px; /* 패딩 추가 */
     border: 1px solid #b2adad;
-    border-radius: 4px;
+    border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.3s ease; /* 호버 효과 설정 */
-    width: auto;  
-    height: auto;
-    font-size: 10px;
+    width: 80px; /* 너비 설정 */
+    height: 40px; /* 높이 설정 */
   }
   
   .nav-button.active {
@@ -278,11 +292,15 @@ button {
     opacity: 1;
   }
 
+  .search1234 {
+    margin-left: 10px;
+  }
   .css-123 {
+    margin-top: 15px;
     margin-left: 15px;
-    font-size: 20px;
+    font-size: 24px;
     color: #000000;
-    display: flex;
+    font-family: 'omyu_pretty', sans-serif;
   }
 
   /* Classic.css or Classic2.css or a new CSS file for background styles */
@@ -290,5 +308,6 @@ button {
   .dropdown-menu a.dropdown-item:hover {
     background-color: #380101; /* 원하는 배경색으로 변경하세요 */
   color: white; /* 텍스트 색상 변경 (선택 사항) */
-  }
   
+  }
+

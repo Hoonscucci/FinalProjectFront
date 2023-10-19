@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import "./style/Search.css";
-import unranked_image from "./img/unranked.png"
-import iron_image from "./img/iron.png"
-import bronze_image from "./img/bronze.png"
-import silver_image from "./img/silver.png"
-import gold_image from "./img/gold.png"
-import platinum_image from "./img/platinum.png"
-import emerald_image from "./img/emerald.png"
-import diamond_image from "./img/diamond.png"
-import master_image from "./img/master.png"
-import grandmaster_image from "./img/grandmaster.png"
-import challenger_image from "./img/challenger.png"
-
+import unranked_image from "./img/unranked.png";
+import iron_image from "./img/iron.png";
+import bronze_image from "./img/bronze.png";
+import silver_image from "./img/silver.png";
+import gold_image from "./img/gold.png";
+import platinum_image from "./img/platinum.png";
+import emerald_image from "./img/emerald.png";
+import diamond_image from "./img/diamond.png";
+import master_image from "./img/master.png";
+import grandmaster_image from "./img/grandmaster.png";
+import challenger_image from "./img/challenger.png";
+import ErrorPage from "../ErrorPage.js";
 
 const Search = () => {
   const [playerData, setPlayerData] = useState({});
@@ -22,7 +22,8 @@ const Search = () => {
   const [userMatch, setUserMatch] = useState([]);
   const API_KEY = "RGAPI-d9d920d1-34c1-4fee-ae05-f7d31572d99b";
   const location = useLocation();
-  
+  const [loading, setLoading] = useState(false);
+
   console.log(location);
 
   const imagess = {
@@ -36,55 +37,37 @@ const Search = () => {
     DIAMOND: diamond_image,
     MASTER: master_image,
     GRANDMASTER: grandmaster_image,
-    CHALLENGER: challenger_image
-  }
-  
-  // const rankImages = {
-  //   UNRANKED: `https://z.fow.kr/img/emblem/unranked.png`,
-  //   IRON: `https://z.fow.kr/img/emblem/iron.png`,
-  //   BRONZE: `https://z.fow.kr/img/emblem/bronze.png`,
-  //   SILVER: `https://z.fow.kr/img/emblem/sliver.png`,
-  //   GOLD: `https://z.fow.kr/img/emblem/gold.png`,
-  //   // PLATINUM: `https://z.fow.kr/img/emblem/platinum.png`,
-  //   PLATINUM: `emblem-platinum.p`,
-  //   EMERALD: `https://z.fow.kr/img/emblem/emerald.png`,
-  //   DIAMOND: `https://z.fow.kr/img/emblem/diamond.png`,
-  //   MASTER: `https://z.fow.kr/img/emblem/master.png`,
-  //   GRANDMASTER: `https://z.fow.kr/img/emblem/grandmaster.png`,
-  //   CHALLENGER:`https://z.fow.kr/img/emblem/challenger.png`,
-  // };
+    CHALLENGER: challenger_image,
+  };
 
-
+  // Searchbar에서 입력된 input값 받아오기.
   useEffect(() => {
     searchForPlayer(location.state.searchText);
   }, [location.state.searchText]);
 
-  
-
+  // 받아온 input값을 ex)인형이면 -> 인 형 으로 변환하기.
   const searchForPlayer = async (searchText) => {
     try {
+      setLoading(true);
       const modifiedSearchText =
         searchText.length === 2
           ? searchText.charAt(0) + " " + searchText.charAt(1)
           : searchText;
       // 두글자만 들어오면 중간에 띄어쓰기 돼서 검색이 되게끔.
 
-
+      // api에 수정된 텍스트 넣기.
       var summonerV4 =
         "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" +
         modifiedSearchText +
         "?api_key=" +
         API_KEY;
-      const result = await axios.get(summonerV4); // 비동기처리
+      const result = await axios.get(summonerV4);
+      // 비동기처리
       console.log(result);
 
       const result2 = await axios.get(
         `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${result.data.id}?api_key=${API_KEY}`
       ); // 비동기처리(leagueV4)
-
-      // const result3 = await axios.get(
-      //   `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${result.data.id}?api_key=${API_KEY}`
-      // )
 
       //////////////////// 매치목록 뽑기 ////////////////
       const puuid = result.data.puuid;
@@ -97,7 +80,7 @@ const Search = () => {
       const matchId = matchdata.data;
       const matchLog = [];
       console.log(matchId); // 매치 목록 (최대 20개)
-      console.log(matchLog)
+      console.log(matchLog);
 
       for (let i = 0; i < 5; i++) {
         matchLog.push(
@@ -108,7 +91,7 @@ const Search = () => {
       }
 
       const userDatas = [];
-      console.log(matchLog[1])
+      console.log(matchLog[1]);
       for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 10; j++) {
           if (
@@ -141,7 +124,7 @@ const Search = () => {
                 matchLog[i].data.info.participants[j].deaths
               ).toFixed(2),
               img: `https://ddragon.leagueoflegends.com/cdn/13.19.1/img/champion/${matchLog[i].data.info.participants[j].championName}.png`,
-              
+
               gameMode: matchLog[i].data.info.gameMode,
             });
           }
@@ -153,7 +136,6 @@ const Search = () => {
       console.log(userDatas);
       console.log(userMatch); // 5개의 매치기록 (총10개)
       console.log(matchLog[1]);
-    
 
       ////////////////////////////////////////////////////
       const soloRankData = result2.data.find(
@@ -174,32 +156,33 @@ const Search = () => {
       setSoloRankData(soloRankData);
       setFlexRankData(flexRankData);
 
-      console.log(
-        soloRankData.tier,
-        soloRankData.rank,
-        soloRankData.leaguePoints
-      );
-      console.log(soloRankData.wins, soloRankData.losses);
-      console.log(
-        flexRankData.tier,
-        flexRankData.rank,
-        flexRankData.leaguePoints
-      );
-      console.log(flexRankData.wins, flexRankData.losses);
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log("오류 발생:", error);
+      setLoading(false);
+      window.location.href = "http://localhost:3000/Noname";
     }
   };
   return (
     <>
-      {/* 통합 테이블 */}
-      <div className="table_summary" >
+      <div className="table_summary">
+        {loading ? (
+          <div className="loading-indicator">
+            <ErrorPage />
+          </div>
+        ) : (
+          <></>
+        )}
         <div
           style={{
             backgroundColor: "#fff",
           }}
         >
-          <div className="table_summary" >
+          <div className="main-name">
+            <div className="main-subname">소환사 정보</div>
+            <div className="main-subname2">게임 전적</div>
+          </div>
+          <div className="table_summary">
             <br></br>
             <div
               style={{
@@ -214,51 +197,52 @@ const Search = () => {
               {playerData.id ? (
                 <>
                   <div>
-                  <div
-                    style={{ top: "40px", left: "60px", position: "absolute" }}
-                  >
-                    {/* <img
-                      src={https://ddragon.leagueoflegends.com/cdn/13.19.1/img/profileicon/{4389}.png}
-                      alt=""
-                      style={{
-                        border: "1px",
-                        width: "128px",
-                        height: "128px;",
-                      }} // 이미지의 테두리 스타일을 설정 (선택 사항)
-                    /> */}
-                  </div>
-                  <div
-                    style={{
-                      width: "5px",
-                      heigth: "125px",
-                      position: "relative",
-                      float: "left",
-                    }}
-                  >
-                    {" "}
-                  </div>
-                  <div
-                    style={{ top: "10px", left: "75px", position: "absolute" }}
-                  >
-                    <img
-                      src={`https://ddragon.leagueoflegends.com/cdn/13.19.1/img/profileicon/${playerData.profileIconId}.png`}
-                      alt="프로필아이콘"
-                      style={{
-                        border: "1px",
-                        width: "100px",
-                        height: "128px;",
-                      }} // 이미지의 테두리 스타일을 설정 (선택 사항)
-                    />
-                  </div>
                     <div
-                      div style={{ marginLeft: "250px" ,
-                        top: "35px",
-                        left: "0px",
+                      style={{
+                        top: "40px",
+                        left: "60px",
+                        position: "absolute",
+                      }}
+                    ></div>
+                    <div
+                      style={{
+                        width: "5px",
+                        heigth: "125px",
+                        position: "relative",
+                        float: "left",
+                      }}
+                    >
+                      {" "}
+                    </div>
+                    <div
+                      style={{
+                        top: "10px",
+                        left: "75px",
                         position: "absolute",
                       }}
                     >
-                      
-                      
+                      <img
+                        src={`https://ddragon.leagueoflegends.com/cdn/13.20.1/img/profileicon/${playerData.profileIconId}.png`}
+                        alt="프로필아이콘"
+                        style={{
+                          
+                          width: "100px",
+                          height: "100px;",
+                          borderRadius: "5px"
+                        }}
+                      />
+                    </div>
+                    <div
+                      div
+                      style={{
+                        marginLeft: "250px",
+                        top: "20px",
+                        left: "0px",
+                        position: "absolute",
+                        fontFamily: "omyu_pretty, sans-serif",
+                        fontSize: "20px",
+                      }}
+                    >
                       <p>소환사레벨: {playerData.summonerLevel}</p>
                       <p>소환사이름: {playerData.name}</p>
                     </div>
@@ -367,8 +351,8 @@ const Search = () => {
                       alt={`등급: ${soloRankData.tier}`}
                       style={{
                         border: "1px",
-                        width: "128px",
-                        height: "128px;",
+                        width: "144px",
+                        height: "144px;",
                       }} // 이미지의 테두리 스타일을 설정 (선택 사항)
                     />
                   </div>
@@ -383,8 +367,25 @@ const Search = () => {
                     {" "}
                   </div>
 
-                  <div style={{ marginLeft: "245px" }}>
-                    <p>솔로랭크</p>
+                  <div
+                    style={{
+                      marginLeft: "245px",
+                      marginTop: "12px",
+                      fontFamily: "omyu_pretty, sans-serif",
+                      fontSize: "18px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "omyu_pretty, sans-serif",
+                        fontSize: "24px",
+                        marginLeft: "50px",
+                        fontWeight:"bold"
+                      }}
+                    >
+                      {" "}
+                      <p>솔로랭크</p>
+                    </div>
                     <p>
                       등급: {soloRankData.tier} {soloRankData.rank}
                     </p>
@@ -410,14 +411,29 @@ const Search = () => {
                     <img
                       src={imagess["UNRANKED"]}
                       alt="UNRANKED"
-                      width="128px"
-                      height="128px"
+                      width="144px"
+                      height="144px"
                       style={{ border: "1px" }}
                     />
                   </div>
-                  <div style={{ marginLeft: "250px" }}>
-                    <p>솔로랭크</p>
-                    <p>등급: 배치</p>
+
+                  <div
+                    style={{
+                      marginLeft: "300px",
+                      fontFamily: "omyu_pretty, sans-serif",
+                      fontSize: "20px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "omyu_pretty, sans-serif",
+                        fontSize: "24px",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      <p>솔로랭크</p>
+                    </div>
+                    <p>등급 : 배치</p>
                   </div>
                 </>
               )}
@@ -447,13 +463,29 @@ const Search = () => {
                     <img
                       src={imagess[flexRankData.tier]}
                       alt={`등급: ${flexRankData.tier}`}
-                      width="128" // 이미지의 너비를 100픽셀로 변경
-                      height="128" // 이미지의 높이를 100픽셀로 변경
+                      width="144" // 이미지의 너비를 100픽셀로 변경
+                      height="144" // 이미지의 높이를 100픽셀로 변경
                       style={{ border: "0px" }} // 이미지의 테두리 스타일을 설정 (선택 사항)
                     />
                   </div>
-                  <div style={{ marginLeft: "250px" }}>
-                    <p>자유랭크</p>
+                  <div
+                    style={{
+                      marginLeft: "250px",
+                      marginTop: "12px",
+                      fontFamily: "omyu_pretty, sans-serif",
+                      fontSize: "18px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "omyu_pretty, sans-serif",
+                        fontSize: "24px",
+                        marginLeft: "50px",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      <p>자유랭크</p>
+                    </div>
                     <p>
                       등급: {flexRankData.tier} {flexRankData.rank}
                     </p>
@@ -479,15 +511,28 @@ const Search = () => {
                     <img
                       src={imagess.UNRANKED}
                       alt="UNRANKED"
-                      width="128"
-                      height="128"
+                      width="144"
+                      height="144"
                       style={{ border: "0px" }}
                     />
                   </div>
-                  <div style={{ marginLeft: "250px" }}>
-                    <p>자유랭크</p>
-                    <p>등급: 배치</p>
-                    
+                  <div
+                    style={{
+                      marginLeft: "300px",
+                      fontFamily: "omyu_pretty, sans-serif",
+                      fontSize: "20px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "omyu_pretty, sans-serif",
+                        fontSize: "24px",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      <p>자유랭크</p>
+                    </div>
+                    <p>등급 : 배치</p>
                   </div>
                 </>
               )}
