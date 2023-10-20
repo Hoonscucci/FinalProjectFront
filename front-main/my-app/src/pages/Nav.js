@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Nav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isChampionDropdownOpen, setIsChampionDropdownOpen] = useState(false);
+
   const navigate = useNavigate();
   const logOutHandler = () => {
     sessionStorage.clear();
